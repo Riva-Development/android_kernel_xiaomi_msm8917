@@ -1602,13 +1602,9 @@ eHalStatus sme_Open(tHalHandle hHal)
 
       sme_p2pOpen(pMac);
       smeTraceInit(pMac);
-<<<<<<< HEAD
 #ifdef SME_TRACE_RECORD
       sme_register_debug_callback();
 #endif
-=======
-      sme_register_debug_callback();
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
 
    }while (0);
 
@@ -7039,10 +7035,7 @@ VOS_STATUS sme_DbgWriteMemory(tHalHandle hHal, v_U32_t memAddr, v_U8_t *pBuf, v_
 }
 
 
-<<<<<<< HEAD
 #ifdef WLAN_DEBUG
-=======
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
 void pmcLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...)
 {
     VOS_TRACE_LEVEL  vosDebugLevel;
@@ -7063,10 +7056,6 @@ void pmcLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...)
 
 void smsLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString,...)
 {
-<<<<<<< HEAD
-=======
-#ifdef WLAN_DEBUG
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
     // Verify against current log level
     if ( loglevel > pMac->utils.gLogDbgLevel[LOG_INDEX_FOR_MODULE( SIR_SMS_MODULE_ID )] )
         return;
@@ -7080,13 +7069,8 @@ void smsLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString,...)
 
         va_end( marker );              /* Reset variable arguments.      */
     }
-<<<<<<< HEAD
 }
 #endif
-=======
-#endif
-}
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
 
 /* ---------------------------------------------------------------------------
     \fn sme_GetWcnssWlanCompiledVersion

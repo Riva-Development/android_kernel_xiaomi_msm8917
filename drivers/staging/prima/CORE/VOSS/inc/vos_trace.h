@@ -113,10 +113,7 @@ typedef enum
 
 #else
 #define MTRACE(p) {  }
-<<<<<<< HEAD
 #define CASE_RETURN_STRING( str ) { }
-=======
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
 
 #endif
 

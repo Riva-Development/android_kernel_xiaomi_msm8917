@@ -45,21 +45,16 @@
 #define __printf(a,b)
 #endif
 
-<<<<<<< HEAD
+
 #ifdef WLAN_DEBUG
-=======
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
 void __printf(3,4)
 smsLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...);
 
 void __printf(3,4)
 pmcLog(tpAniSirGlobal pMac, tANI_U32 loglevel, const char *pString, ...);
-<<<<<<< HEAD
 #else
 #define smsLog(arg...)
 #define pmcLog(arg...)
 #endif
-=======
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
 
 #endif // __SMS_DEBUG_H__
