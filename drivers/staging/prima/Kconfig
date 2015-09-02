@@ -53,11 +53,8 @@ config WLAN_OFFLOAD_PACKETS
 	bool "Enable offload packets feature"
 	default n
 
-<<<<<<< HEAD
 config QCOM_TDLS
 	bool "Enable TDLS feature"
 	default n
 
-=======
->>>>>>> b8466ceeb67c... staging: import prima wlan driver
 endif # PRIMA_WLAN || PRONTO_WLAN
