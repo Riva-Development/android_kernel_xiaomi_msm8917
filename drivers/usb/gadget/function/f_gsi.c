@@ -13,6 +13,22 @@
 
 #include "f_gsi.h"
 #include "rndis.h"
+#include "../debug.h"
+
+static unsigned int gsi_in_aggr_size;
+module_param(gsi_in_aggr_size, uint, S_IRUGO | S_IWUSR);
+MODULE_PARM_DESC(gsi_in_aggr_size,
+		"Aggr size of bus transfer to host");
+
+static unsigned int gsi_out_aggr_size;
+module_param(gsi_out_aggr_size, uint, S_IRUGO | S_IWUSR);
+MODULE_PARM_DESC(gsi_out_aggr_size,
+		"Aggr size of bus transfer to device");
+
+static unsigned int gsi_in_rndis_aggr_size = GSI_IN_RNDIS_AGGR_SIZE;
+module_param(gsi_in_rndis_aggr_size, uint, S_IRUGO | S_IWUSR);
+MODULE_PARM_DESC(gsi_in_rndis_aggr_size,
+		"Aggr size of bus transfer to host for RNDIS");
 
 struct usb_gsi_debugfs {
 	struct dentry *debugfs_root;
