@@ -7,4 +7,3 @@ obj-$(CONFIG_MSM_ULTRASOUND) += ultrasound/
 
 obj-$(CONFIG_DTS_EAGLE)         += dts_eagle/
 ccflags-y := -Os
-
