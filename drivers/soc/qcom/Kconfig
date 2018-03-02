@@ -923,6 +923,13 @@ config MSM_BAM_DMUX
 		This handle the interrupts raised by BG and notify the G-link with
 		interrupt event and event data.
 
+config CPUMAXFREQ
+	bool "Enable CPUMAXFREQ Proc Interface"
+	help
+	  Provide a interface for getting the maximum frequency supported by cpu core
+
+source "drivers/soc/qcom/memshare/Kconfig"
+
 source "drivers/soc/qcom/wcnss/Kconfig"
 
 config BIG_CLUSTER_MIN_FREQ_ADJUST
