@@ -19,6 +19,7 @@
 #include <linux/types.h>
 #include <linux/batterydata-lib.h>
 #include <linux/power_supply.h>
+#include <linux/hardware_info.h>
 
 static int of_batterydata_read_lut(const struct device_node *np,
 			int max_cols, int max_rows, int *ncols, int *nrows,
@@ -314,6 +315,17 @@ static int64_t of_batterydata_convert_battery_id_kohm(int batt_id_uv,
 	return resistor_value_kohm;
 }
 
+
+#ifdef CONFIG_C3N_SMB358
+extern int battid_resister;
+#endif
+
+int battery_type_id = 0 ;
+
+#if defined(CONFIG_A13N_PMI8952) || defined(CONFIG_D1_ROSY)
+static char *default_batt_type = "Generic_Battery";
+#endif
+
 struct device_node *of_batterydata_get_best_profile(
 		const struct device_node *batterydata_container_node,
 		int batt_id_kohm, const char *batt_type)
@@ -327,8 +339,26 @@ struct device_node *of_batterydata_get_best_profile(
 	int delta = 0, best_delta = 0, best_id_kohm = 0, id_range_pct,
 		i = 0, rc = 0, limit = 0;
 	bool in_range = false;
-#if (defined CONFIG_MACH_XIAOMI_MIDO) || (defined CONFIG_MACH_XIAOMI_TISSOT)
-	int checknum = 0, match = 0;
+	bool default_id = false;
+
+	psy = power_supply_get_by_name(psy_name);
+	if (!psy) {
+		pr_err("%s supply not found. defer\n", psy_name);
+		return ERR_PTR(-EPROBE_DEFER);
+	}
+
+	rc = psy->get_property(psy, POWER_SUPPLY_PROP_RESISTANCE_ID, &ret);
+	if (rc) {
+		pr_err("failed to retrieve resistance value rc=%d\n", rc);
+		return ERR_PTR(-ENOSYS);
+	}
+
+#ifdef CONFIG_C3N_SMB358
+		batt_id_kohm = battid_resister;
+		pr_err("C3N batt_id = %d\n", batt_id_kohm);
+#else
+		batt_id_kohm = ret.intval / 1000;
+		pr_err("WT batt_id = %d\n", batt_id_kohm);
 #endif
 
 	/* read battery id range percentage for best profile */
@@ -393,13 +423,26 @@ struct device_node *of_batterydata_get_best_profile(
 		}
 	}
 
-#if (defined CONFIG_MACH_XIAOMI_MIDO) || (defined CONFIG_MACH_XIAOMI_TISSOT)
-	checknum = abs(best_id_kohm - batt_id_kohm);
-	if (match == 0) {
-		best_node = default_node;
-		checknum = 0;
+#if defined(CONFIG_A13N_PMI8952) || defined(CONFIG_D1_ROSY)
+
+	if (best_node == NULL) {
+		for_each_child_of_node(batterydata_container_node, node) {
+				if (default_batt_type != NULL) {
+					rc = of_property_read_string(node, "qcom,battery-type",
+									&battery_type);
+					if (!rc && strcmp(battery_type, default_batt_type) == 0) {
+						best_node = node;
+						best_id_kohm = batt_id_kohm;
+						default_id = true;
+						pr_err("No battery data found, Use default battery data\n");
+						break;
+					}
+				}
+			}
 	}
+
 #endif
+
 	if (best_node == NULL) {
 		pr_err("No battery data found\n");
 		return best_node;
@@ -410,8 +453,7 @@ struct device_node *of_batterydata_get_best_profile(
 	if (checknum >
 #else
 	if (abs(best_id_kohm - batt_id_kohm) >
-#endif
-			((best_id_kohm * id_range_pct) / 100)) {
+			((best_id_kohm * id_range_pct) / 100) && !default_id) {
 		pr_err("out of range: profile id %d batt id %d pct %d",
 			best_id_kohm, batt_id_kohm, id_range_pct);
 		return NULL;
@@ -419,10 +461,23 @@ struct device_node *of_batterydata_get_best_profile(
 
 	rc = of_property_read_string(best_node, "qcom,battery-type",
 							&battery_type);
-	if (!rc)
+	if (!rc) {
+		hardwareinfo_set_prop(HARDWARE_BATTERY_ID, battery_type);
 		pr_info("%s found\n", battery_type);
+	}
 	else
 		pr_info("%s found\n", best_node->name);
+
+#ifdef CONFIG_C3N_SMB358
+
+	if (strcmp(battery_type, "wingtech-feimaotui-4v4-3030mah") == 0) {
+			 battery_type_id = 1;
+	} else if (strcmp(battery_type, "wingtech-xingwangda-4v4-3030mah") == 0) {
+			 battery_type_id = 2;
+	}
+
+#endif
+
 
 	return best_node;
 }
@@ -484,3 +539,4 @@ int of_batterydata_read_data(struct device_node *batterydata_container_node,
 }
 
 MODULE_LICENSE("GPL v2");
+
