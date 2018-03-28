@@ -122,4 +122,5 @@ int mdss_i2c_byte_write(struct i2c_client *client, uint8_t slave_addr,
 int mdss_prim_panel_fb_unblank(int timeout);
 #endif
 
+int mdss_prim_panel_fb_unblank(int timeout);
 #endif /* __MDSS_IO_UTIL_H__ */

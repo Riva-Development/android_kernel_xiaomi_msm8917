@@ -44,6 +44,61 @@ enum usb_noc_mode {
 };
 
 /**
+ * Supported USB modes
+ *
+ * USB_PERIPHERAL       Only peripheral mode is supported.
+ * USB_HOST             Only host mode is supported.
+ * USB_OTG              OTG mode is supported.
+ *
+ */
+enum usb_mode_type {
+	USB_NONE = 0,
+	USB_PERIPHERAL,
+	USB_HOST,
+	USB_OTG,
+};
+
+/**
+ * OTG control
+ *
+ * OTG_NO_CONTROL	Id/VBUS notifications not required. Useful in host
+ *                      only configuration.
+ * OTG_PHY_CONTROL	Id/VBUS notifications comes form USB PHY.
+ * OTG_PMIC_CONTROL	Id/VBUS notifications comes from PMIC hardware.
+ * OTG_USER_CONTROL	Id/VBUS notifcations comes from User via sysfs.
+ *
+ */
+enum otg_control_type {
+	OTG_NO_CONTROL = 0,
+	OTG_PHY_CONTROL,
+	OTG_PMIC_CONTROL,
+	OTG_USER_CONTROL,
+};
+
+/**
+ * PHY used in
+ *
+ * INVALID_PHY			Unsupported PHY
+ * CI_PHY                      Chipidea PHY
+ * SNPS_PICO_PHY               Synopsis Pico PHY
+ * SNPS_FEMTO_PHY              Synopsis Femto PHY
+ * QUSB_ULPI_PHY
+ *
+ */
+enum msm_usb_phy_type {
+	INVALID_PHY = 0,
+	CI_PHY,			/* not supported */
+	SNPS_PICO_PHY,
+	SNPS_FEMTO_PHY,
+	QUSB_ULPI_PHY,
+};
+
+#define IDEV_CHG_MAX	1000
+#define IUNIT		100
+#define IDEV_HVDCP_CHG_MAX	1800
+#define IDEV_CHG_MIN 500
+
+/**
  * Different states involved in USB charger detection.
  *
  * USB_CHG_STATE_UNDEFINED	USB charger is not connected or detection
@@ -203,6 +258,8 @@ struct msm_otg {
 	struct reset_control *core_reset;
 	struct reset_control *phy_reset;
 	struct reset_control *phy_por_reset;
+	spinlock_t otg_phy_clk_lock;
+	bool otg_phy_clk_enable;
 	long core_clk_rate;
 	long core_clk_svs_rate;
 	long core_clk_nominal_rate;
