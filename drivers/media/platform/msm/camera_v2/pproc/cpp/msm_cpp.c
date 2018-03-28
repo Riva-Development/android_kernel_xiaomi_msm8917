@@ -1,4 +1,5 @@
 /* Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2018 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -703,7 +704,6 @@ static int32_t msm_cpp_poll_rx_empty(void __iomem *cpp_base)
 	}
 	return rc;
 }
-
 static int msm_cpp_dump_addr(struct cpp_device *cpp_dev,
 	struct msm_cpp_frame_info_t *frame_info)
 {
@@ -765,7 +765,7 @@ static int msm_cpp_dump_addr(struct cpp_device *cpp_dev,
 				cpp_frame_msg[s_base + rd_ref_off + i * s_size]
 				);
 		}
-
+  
 		if (ubwc_enabled) {
 			pr_err("stripe %d: metadata %x, %x, %x, %x\n", i,
 				cpp_frame_msg[s_base + wr0_mdata_off +
@@ -781,36 +781,6 @@ static int msm_cpp_dump_addr(struct cpp_device *cpp_dev,
 
 	}
 	return 0;
-}
-
-static void msm_cpp_iommu_fault_reset_handler(
-	struct iommu_domain *domain, struct device *dev,
-	void *token)
-{
-	struct cpp_device *cpp_dev = NULL;
-
-	if (!token) {
-		pr_err("Invalid token\n");
-		return;
-	}
-
-	cpp_dev = token;
-
-	if (cpp_dev->fault_status != CPP_IOMMU_FAULT_NONE) {
-		pr_err("fault already detected %d\n", cpp_dev->fault_status);
-		return;
-	}
-
-	cpp_dev->fault_status = CPP_IOMMU_FAULT_DETECTED;
-
-	/* mask IRQ status */
-	msm_camera_io_w(0xB, cpp_dev->cpp_hw_base + 0xC);
-
-	pr_err("Issue CPP HALT %d\n", cpp_dev->fault_status);
-
-	/* MMSS_A_CPP_AXI_CMD = 0x16C, reset 0x1*/
-	msm_camera_io_w(0x1, cpp_dev->cpp_hw_base + 0x16C);
-
 }
 
 static void msm_cpp_iommu_fault_handler(struct iommu_domain *domain,
@@ -840,15 +810,16 @@ static void msm_cpp_iommu_fault_handler(struct iommu_domain *domain,
 		}
 		tasklet_kill(&cpp_dev->cpp_tasklet);
 
-		pr_err("in recovery, HALT status = 0x%x\n",
-			msm_camera_io_r(cpp_dev->cpp_hw_base + 0x10));
+				rc = cpp_load_fw(cpp_dev, cpp_dev->fw_name_bin);
 
-		while (counter < MSM_CPP_POLL_RETRIES) {
-			result = msm_camera_io_r(cpp_dev->cpp_hw_base + 0x10);
-			if (result & 0x2)
-				break;
-			usleep_range(100, 200);
-			counter++;
+		if (rc < 0) {
+			pr_err("load fw failure %d-retry\n", rc);
+			rc = msm_cpp_reset_vbif_and_load_fw(cpp_dev);
+			if (rc < 0) {
+				msm_cpp_set_micro_irq_mask(cpp_dev, 1, 0x8);
+				mutex_unlock(&cpp_dev->mutex);
+				return;
+			}
 		}
 		/* MMSS_A_CPP_IRQ_STATUS_0 = 0x10 */
 		pr_err("counter %d HALT status later = 0x%x\n",
@@ -925,11 +896,12 @@ static int cpp_init_mem(struct cpp_device *cpp_dev)
 	}
 
 	cpp_dev->iommu_hdl = iommu_hdl;
+
 	cam_smmu_reg_client_page_fault_handler(
 			cpp_dev->iommu_hdl,
-			msm_cpp_iommu_fault_handler,
-			msm_cpp_iommu_fault_reset_handler,
-			cpp_dev);
+			msm_cpp_iommu_fault_handler, cpp_dev);
+
+
 	return 0;
 }
 

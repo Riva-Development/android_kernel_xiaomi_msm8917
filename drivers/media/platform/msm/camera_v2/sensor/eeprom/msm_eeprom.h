@@ -48,4 +48,7 @@ struct msm_eeprom_ctrl_t {
 	uint8_t is_supported;
 };
 
+extern int ov13850_eeprom_sensor_writereg(struct msm_eeprom_ctrl_t *s_ctrl, uint32_t reg_addr, uint32_t reg_value, uint32_t delay);
+extern int eeprom_init_ov13850_reg_otp(struct msm_eeprom_ctrl_t *e_ctrl);
+
 #endif
