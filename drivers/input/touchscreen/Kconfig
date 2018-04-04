@@ -1360,14 +1360,34 @@ config TOUCHSCREEN_HIMAX_CHIPSET
 
 source "drivers/input/touchscreen/hxchipset/Kconfig"
 
-config TOUCHSCREEN_EKTF3XXX_CHIPSET
-	bool "Elan EKTF3XXX touchpanel CHIPSET"
+source "drivers/input/touchscreen/FT8716/Kconfig"
+source "drivers/input/touchscreen/FT8006m/Kconfig"
+
+config TOUCHSCREEN_FT5336
+	bool "FOCALTECH touchpanel FT5336 series"
 	depends on I2C
-	help
-	  Say Y here if you have a Elan CHIPSET touchscreen.
-	  ELAN controllers are multi touch controllers which can
-	  report 10 touches at a time.
 
-		  If unusre, say N.
+source "drivers/input/touchscreen/ft5336/Kconfig"
 
+config TOUCHSCREEN_FT5346
+	bool "FOCALTECH touchpanel FT5346 series"
+	depends on I2C
+
+source "drivers/input/touchscreen/FT5346/Kconfig"
+
+config TOUCHSCREEN_GT915L
+	tristate "GT915L touchscreens"
+	depends on I2C
+
+source "drivers/input/touchscreen/GT915L/Kconfig"
+
+config TOUCHSCREEN_GT917D
+	tristate "GT917D touchscreens"
+	depends on I2C
+
+source "drivers/input/touchscreen/GT917D/Kconfig"
+
+config TOUCHSCREEN_LOCKDOWN_INFO
+	bool "lockdown info"
+	default n
 endif
