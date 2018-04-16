@@ -2230,43 +2230,15 @@ static int _gpiod_direction_output_raw(struct gpio_desc *desc, int value)
 	struct gpio_chip *gc = desc->gdev->chip;
 	int ret;
 
-	/* GPIOs used for IRQs shall not be set as output */
-	if (test_bit(FLAG_USED_AS_IRQ, &desc->flags)) {
-		gpiod_err(desc,
-			  "%s: tried to set a GPIO tied to an IRQ as output\n",
-			  __func__);
-		return -EIO;
 	}
 
-	if (test_bit(FLAG_OPEN_DRAIN, &desc->flags)) {
-		/* First see if we can enable open drain in hardware */
-		if (gc->set_single_ended) {
-			ret = gc->set_single_ended(gc, gpio_chip_hwgpio(desc),
-						   LINE_MODE_OPEN_DRAIN);
-			if (!ret)
-				goto set_output_value;
-		}
-		/* Emulate open drain by not actively driving the line high */
-		if (value)
-			return gpiod_direction_input(desc);
-	}
-	else if (test_bit(FLAG_OPEN_SOURCE, &desc->flags)) {
-		if (gc->set_single_ended) {
-			ret = gc->set_single_ended(gc, gpio_chip_hwgpio(desc),
-						   LINE_MODE_OPEN_SOURCE);
-			if (!ret)
-				goto set_output_value;
-		}
-		/* Emulate open source by not actively driving the line low */
-		if (!value)
-			return gpiod_direction_input(desc);
-	} else {
-		/* Make sure to disable open drain/source hardware, if any */
-		if (gc->set_single_ended)
-			gc->set_single_ended(gc,
-					     gpio_chip_hwgpio(desc),
-					     LINE_MODE_PUSH_PULL);
-	}
+	/* Open drain pin should not be driven to 1 */
+	if (value && test_bit(FLAG_OPEN_DRAIN,  &desc->flags))
+		return gpiod_direction_input(desc);
+
+	/* Open source pin should not be driven to 0 */
+	if (!value && test_bit(FLAG_OPEN_SOURCE,  &desc->flags))
+		return gpiod_direction_input(desc);
 
 set_output_value:
 	if (!gc->set || !gc->direction_output) {
