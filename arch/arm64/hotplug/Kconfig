@@ -1,16 +1,18 @@
-config ASMP
- 	bool "Multi-core automatic hotplug support"
- 	depends on SMP
- 	default n
- 	help
- 	Automatically hotplugs the multiple cpu cores on and off
- 	based on cpu load and suspend stat
+menu "Custom Hotplug drivers"
 
-          Note that this will BREAK any runtime patching of the kernel text
-          (i.e. anything that uses apply_alternatives,
-          aarch64_insn_patch_text_nosync, etc. including the various CPU
-          errata workarounds in arch/arm64/kernel/cpu_errata.c).
+config CUSTOM_HOTPLUG
+	bool "Enable custom hotplug support"
 
-	  For MPU based protection-enabled targets please refer to
-	  MSM_KERNEL_PROTECT_MPU
+config THUNDERPLUG_CONTROL
+	bool "Thunderplug"
+	depends on CUSTOM_HOTPLUG
+	help
+	  This driver hotplugs cpu cores based on per-core load
 
+config ALUCARD_CONTROL
+	bool "Alucard"
+	depends on CUSTOM_HOTPLUG
+	help
+	  Known for being battery friendly. Developed by Alucard_24@XDA
+
+endmenu
