@@ -4900,7 +4900,11 @@ WLANTL_GetFrames
         {
            if ( ! WLANTL_STA_ID_INVALID( ucSTAId ) ) 
            {
+<<<<<<< HEAD
                 TLLOGE(VOS_TRACE( VOS_MODULE_ID_TL, VOS_TRACE_LEVEL_DEBUG,
+=======
+                TLLOGE(VOS_TRACE( VOS_MODULE_ID_TL, VOS_TRACE_LEVEL_ERROR,
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
                   "WLAN TL:Not fetching frame because suspended for sta ID %d", 
                    ucSTAId));
            }
@@ -6639,7 +6643,11 @@ WLANTL_RxFrames
               }
               else
               {
+<<<<<<< HEAD
                   VOS_TRACE(VOS_MODULE_ID_TL, VOS_TRACE_LEVEL_DEBUG,
+=======
+                  VOS_TRACE(VOS_MODULE_ID_TL, VOS_TRACE_LEVEL_ERROR,
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
                             "staId %d doesn't exist"
                             " but mapped to AP staId %d PN:[0x%llX]",
                             ucSTAId, ucAddr3STAId, pn_num);

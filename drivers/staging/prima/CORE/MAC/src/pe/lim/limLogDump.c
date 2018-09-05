@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2012-2013, 2016-2018 The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2012-2013, 2016-2017 The Linux Foundation. All rights reserved.
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -725,8 +729,11 @@ void
 limSetEdcaBcastACMFlag(tpAniSirGlobal pMac, tANI_U32 ac, tANI_U32 acmFlag)
 {
     tpPESession psessionEntry = &pMac->lim.gpSession[0];  //TBD-RAJESH HOW TO GET sessionEntry?????
+<<<<<<< HEAD
     if (ac >= MAX_NUM_AC)
         return;
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     psessionEntry->gLimEdcaParamsBC[ac].aci.acm = (tANI_U8)acmFlag;
     psessionEntry->gLimEdcaParamSetCount++;
     schSetFixedBeaconFields(pMac,psessionEntry);

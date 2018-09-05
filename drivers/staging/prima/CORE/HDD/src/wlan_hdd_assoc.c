@@ -4818,7 +4818,10 @@ int hdd_set_csr_auth_type ( hdd_adapter_t  *pAdapter, eCsrAuthType RSNAuthType)
     switch( pHddStaCtx->conn_info.authType)
     {
        case eCSR_AUTH_TYPE_OPEN_SYSTEM:
+<<<<<<< HEAD
        case eCSR_AUTH_TYPE_AUTOSWITCH:
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 #ifdef FEATURE_WLAN_ESE
        case eCSR_AUTH_TYPE_CCKM_WPA:
        case eCSR_AUTH_TYPE_CCKM_RSN:

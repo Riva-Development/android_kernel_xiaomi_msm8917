@@ -8835,7 +8835,11 @@ tANI_U8 lim_compute_ext_cap_ie_length (tDot11fIEExtCap *ext_cap) {
  *
  * Update the capability info in Assoc/Reassoc request frames and reset
  * the spectrum management, short preamble, immediate block ack bits
+<<<<<<< HEAD
  * and rrm bit mask if the BSS doesnot support it
+=======
+ * if the BSS doesnot support it
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
  *
  * Return: None
  */
@@ -8856,12 +8860,15 @@ void lim_update_caps_info_for_bss(tpAniSirGlobal mac_ctx,
           *caps &= (~LIM_IMMEDIATE_BLOCK_ACK_MASK);
           limLog(mac_ctx, LOG1, FL("Clearing Immed Blk Ack:no AP support"));
     }
+<<<<<<< HEAD
 
     if (!(bss_caps & LIM_RRM_BIT_MASK)) {
           *caps &= (~LIM_RRM_BIT_MASK);
           limLog(mac_ctx, LOG1,
                  FL("Clearing radio measurement :no AP support"));
     }
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 }
 #ifdef SAP_AUTH_OFFLOAD
 /**

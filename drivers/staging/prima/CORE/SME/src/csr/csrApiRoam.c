@@ -10508,6 +10508,7 @@ void csrRoamCheckForLinkStatusChange( tpAniSirGlobal pMac, tSirSmeRsp *pSirMsg )
                                 if(pNewBss)
                                 {
                                     vos_mem_copy(pIbssLog->bssid, pNewBss->bssId, 6);
+<<<<<<< HEAD
                                     if(pNewBss->ssId.length >
                                        VOS_LOG_MAX_SSID_SIZE)
                                         pNewBss->ssId.length =
@@ -10516,6 +10517,13 @@ void csrRoamCheckForLinkStatusChange( tpAniSirGlobal pMac, tSirSmeRsp *pSirMsg )
                                     vos_mem_copy(pIbssLog->ssid,
                                                  pNewBss->ssId.ssId,
                                                  pNewBss->ssId.length);
+=======
+                                    if(pNewBss->ssId.length)
+                                    {
+                                        vos_mem_copy(pIbssLog->ssid, pNewBss->ssId.ssId,
+                                                     pNewBss->ssId.length);
+                                    }
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
                                     pIbssLog->operatingChannel = pNewBss->channelNumber;
                                 }
                                 if(HAL_STATUS_SUCCESS(ccmCfgGetInt(pMac, WNI_CFG_BEACON_INTERVAL, &bi)))
@@ -15410,13 +15418,20 @@ eHalStatus csrSendMBSetContextReqMsg( tpAniSirGlobal pMac, tANI_U32 sessionId,
 {
     tSirSmeSetContextReq *pMsg;
     tANI_U16 msgLen;
+<<<<<<< HEAD
     VOS_STATUS status;
+=======
+    eHalStatus status = eHAL_STATUS_FAILURE;
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     tAniEdType tmpEdType;
     tAniKeyDirection tmpDirection;
     tANI_U8 *pBuf = NULL;
     tANI_U8 *p = NULL;
     tCsrRoamSession *pSession = CSR_GET_SESSION( pMac, sessionId );
+<<<<<<< HEAD
     vos_msg_t msg;
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     smsLog( pMac, LOG1, FL("keylength is %d, Encry type is : %d"),
                             keyLength, edType);
     do {
@@ -15486,6 +15501,7 @@ eHalStatus csrSendMBSetContextReqMsg( tpAniSirGlobal pMac, tANI_U32 sessionId,
                 p = pal_set_U16( p, pal_cpu_to_be16(keyLength) );
         if ( keyLength && pKey ) 
             vos_mem_copy(p, pKey, keyLength);
+<<<<<<< HEAD
         msg.type = pMsg->messageType;
         msg.bodyptr = pMsg;
         msg.bodyval = 0;
@@ -15499,6 +15515,11 @@ eHalStatus csrSendMBSetContextReqMsg( tpAniSirGlobal pMac, tANI_U32 sessionId,
         }
     } while( 0 );
     return eHAL_STATUS_SUCCESS;
+=======
+        status = palSendMBMessage(pMac->hHdd, pMsg);
+    } while( 0 );
+    return( status );
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 }
 
 eHalStatus csrSendMBStartBssReqMsg( tpAniSirGlobal pMac, tANI_U32 sessionId, eCsrRoamBssType bssType, 

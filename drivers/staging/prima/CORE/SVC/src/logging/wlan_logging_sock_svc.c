@@ -1329,8 +1329,12 @@ static int wlan_logging_thread(void *Arg)
 		}
 	}
 
+<<<<<<< HEAD
 	complete(&gwlan_logging.shutdown_comp);
 	do_exit(0);
+=======
+	complete_and_exit(&gwlan_logging.shutdown_comp, 0);
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 
 	return 0;
 }
@@ -1646,7 +1650,10 @@ int wlan_logging_sock_deactivate_svc(void)
 	gapp_pid = INVALID_PID;
 
 	INIT_COMPLETION(gwlan_logging.shutdown_comp);
+<<<<<<< HEAD
 	wmb();
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 	gwlan_logging.exit = true;
 	gwlan_logging.is_active = false;
 	vos_set_multicast_logging(0);

@@ -304,8 +304,12 @@ static struct ieee80211_supported_band wlan_hdd_band_2_4_GHZ =
     .ht_cap.cap            =  IEEE80211_HT_CAP_SGI_20
                             | IEEE80211_HT_CAP_GRN_FLD
                             | IEEE80211_HT_CAP_DSSSCCK40
+<<<<<<< HEAD
                             | IEEE80211_HT_CAP_LSIG_TXOP_PROT
                             | IEEE80211_HT_CAP_SUP_WIDTH_20_40,
+=======
+                            | IEEE80211_HT_CAP_LSIG_TXOP_PROT,
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     .ht_cap.ampdu_factor   = IEEE80211_HT_MAX_AMPDU_64K,
     .ht_cap.ampdu_density  = IEEE80211_HT_MPDU_DENSITY_16,
     .ht_cap.mcs.rx_mask    = { 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
@@ -10858,8 +10862,11 @@ int wlan_hdd_restore_channels(hdd_context_t *hdd_ctx)
 
 		for (band_num = 0; band_num < HDD_NUM_NL80211_BANDS;
 		     band_num++) {
+<<<<<<< HEAD
 			if (!wiphy->bands[band_num])
 				continue;
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 			for (channel_num = 0; channel_num <
 				wiphy->bands[band_num]->n_channels;
 				channel_num++) {
@@ -10939,8 +10946,11 @@ static int wlan_hdd_disable_channels(hdd_context_t *hdd_ctx)
 
 		for (band_num = 0; band_num < HDD_NUM_NL80211_BANDS;
 							band_num++) {
+<<<<<<< HEAD
 			if (!wiphy->bands[band_num])
 				continue;
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 			for (band_ch_num = 0; band_ch_num <
 					wiphy->bands[band_num]->n_channels;
 					band_ch_num++) {
@@ -12299,6 +12309,10 @@ int __wlan_hdd_cfg80211_change_iface( struct wiphy *wiphy,
     struct wireless_dev *wdev;
     hdd_adapter_t *pAdapter = WLAN_HDD_GET_PRIV_PTR( ndev );
     hdd_context_t *pHddCtx;
+<<<<<<< HEAD
+=======
+    hdd_adapter_t  *pP2pAdapter = NULL;
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     tCsrRoamProfile *pRoamProfile = NULL;
     eCsrRoamBssType LastBSSType;
     hdd_config_t *pConfig = NULL;
@@ -12464,6 +12478,28 @@ int __wlan_hdd_cfg80211_change_iface( struct wiphy *wiphy,
                 {
                     wlan_hdd_cancel_existing_remain_on_channel(pAdapter);
                 }
+<<<<<<< HEAD
+=======
+                if (NL80211_IFTYPE_AP == type)
+                {
+                     /* As Loading WLAN Driver one interface being created for p2p device
+                      * address. This will take one HW STA and the max number of clients
+                      * that can connect to softAP will be reduced by one. so while changing
+                      * the interface type to NL80211_IFTYPE_AP (SoftAP) remove p2p0
+                      * interface as it is not required in SoftAP mode.
+                      */
+
+                    // Get P2P Adapter
+                    pP2pAdapter = hdd_get_adapter(pHddCtx, WLAN_HDD_P2P_DEVICE);
+
+                    if (pP2pAdapter)
+                    {
+                        hdd_stop_adapter(pHddCtx, pP2pAdapter, VOS_TRUE);
+                        hdd_deinit_adapter(pHddCtx, pP2pAdapter, TRUE);
+                        hdd_close_adapter(pHddCtx, pP2pAdapter, VOS_TRUE);
+                    }
+                }
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
                 //Disable IMPS & BMPS for SAP/GO
                 if(VOS_STATUS_E_FAILURE ==
                        hdd_disable_bmps_imps(pHddCtx, WLAN_HDD_P2P_GO))
@@ -16949,8 +16985,13 @@ disconnected:
  * @adapter: Pointer to the HDD adapter
  * @req: Pointer to the structure cfg_connect_params receieved from user space
  *
+<<<<<<< HEAD
  * This function will start reassociation if prev_bssid is set and bssid/
  * bssid_hint, channel/channel_hint parameters are present in connect request.
+=======
+ * This function will start reassociation if bssid hint, channel hint and
+ * previous bssid parameters are present in the connect request
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
  *
  * Return: success if reassociation is happening
  *         Error code if reassociation is not permitted or not happening
@@ -16960,6 +17001,7 @@ static int wlan_hdd_reassoc_bssid_hint(hdd_adapter_t *adapter,
 				struct cfg80211_connect_params *req)
 {
 	int status = -EPERM;
+<<<<<<< HEAD
 	const uint8_t *bssid = NULL;
 	uint16_t channel = 0;
 
@@ -16979,6 +17021,16 @@ static int wlan_hdd_reassoc_bssid_hint(hdd_adapter_t *adapter,
 			channel, MAC_ADDR_ARRAY(bssid));
 		status = hdd_reassoc(adapter, bssid, channel,
 				     CONNECT_CMD_USERSPACE);
+=======
+	if (req->bssid_hint && req->channel_hint && req->prev_bssid) {
+		hddLog(VOS_TRACE_LEVEL_INFO,
+			FL("REASSOC Attempt on channel %d to "MAC_ADDRESS_STR),
+			req->channel_hint->hw_value,
+			MAC_ADDR_ARRAY(req->bssid_hint));
+		status  = hdd_reassoc(adapter, req->bssid_hint,
+					req->channel_hint->hw_value,
+					CONNECT_CMD_USERSPACE);
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 	}
 	return status;
 }

@@ -4025,7 +4025,11 @@ tANI_U8 csrConstructRSNIe( tHalHandle hHal, tANI_U32 sessionId, tCsrRoamProfile 
 #endif
     tDot11fBeaconIEs *pIesLocal = pIes;
     eCsrAuthType negAuthType = eCSR_AUTH_TYPE_UNKNOWN;
+<<<<<<< HEAD
     tDot11fIERSN rsn_ie = {0};
+=======
+    tDot11fIERSN rsn_ie;
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 
     smsLog(pMac, LOGW, "%s called...", __func__);
 

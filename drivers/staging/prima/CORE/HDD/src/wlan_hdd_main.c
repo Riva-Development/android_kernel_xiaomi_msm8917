@@ -13802,6 +13802,7 @@ int hdd_wlan_startup(struct device *dev )
    {
       eHalStatus halStatus;
 
+<<<<<<< HEAD
       /* Overwrite the Mac address if config file exist */
       if (VOS_STATUS_SUCCESS != hdd_update_mac_config(pHddCtx))
       {
@@ -13818,6 +13819,8 @@ int hdd_wlan_startup(struct device *dev )
                  pHddCtx->cfg_ini->intfMacAddr[0].bytes[5]);
       }
 
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
       /* Set the MAC Address Currently this is used by HAL to
        * add self sta. Remove this once self sta is added as
        * part of session open.

@@ -3147,7 +3147,11 @@ eHalStatus sme_QosESEProcessReassocTspecRsp(tpAniSirGlobal pMac, v_U8_t sessionI
     tspecIeLen = pCsrConnectedInfo->nTspecIeLength;
     if (tspecIeLen < sizeof(tDot11fIEWMMTSPEC)) {
         VOS_TRACE(VOS_MODULE_ID_SME, VOS_TRACE_LEVEL_ERROR,
+<<<<<<< HEAD
                 FL("ESE Tspec IE len %d less than min %zu"),
+=======
+                FL("ESE Tspec IE len %d less than min %d"),
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
                 tspecIeLen, sizeof(tDot11fIEWMMTSPEC));
         return eHAL_STATUS_FAILURE;
     }

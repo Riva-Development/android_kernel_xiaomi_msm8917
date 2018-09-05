@@ -1385,8 +1385,12 @@ __limProcessAddBAReq( tpAniSirGlobal pMac, tANI_U8 *pRxPacketInfo,tpPESession ps
 
     psessionEntry->amsduSupportedInBA = frmAddBAReq.AddBAParameterSet.amsduSupported;
 
+<<<<<<< HEAD
     pSta = dphLookupHashEntry(pMac, pHdr->sa, &aid,
                               &psessionEntry->dph.dphHashTable);
+=======
+    pSta = dphLookupHashEntry( pMac, pHdr->sa, &aid, &psessionEntry->dph.dphHashTable );
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     if( pSta == NULL )
     {
         limLog( pMac, LOGE,

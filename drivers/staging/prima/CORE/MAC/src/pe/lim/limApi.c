@@ -1086,8 +1086,13 @@ tSirRetStatus peOpen(tpAniSirGlobal pMac, tMacOpenParameters *pMacOpenParam)
      */
 #ifdef LIM_TRACE_RECORD
     MTRACE(limTraceInit(pMac));
+<<<<<<< HEAD
     lim_register_debug_callback();
 #endif
+=======
+#endif
+    lim_register_debug_callback();
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     return eSIR_SUCCESS;
 }
 

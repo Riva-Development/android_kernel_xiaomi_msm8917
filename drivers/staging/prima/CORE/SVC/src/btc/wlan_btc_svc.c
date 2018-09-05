@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2012-2013, 2017-2018 The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2012-2013, 2017 The Linux Foundation. All rights reserved.
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -56,14 +60,21 @@ void send_btc_nlink_msg (int type, int dest_pid)
    struct nlmsghdr *nlh;
    tAniMsgHdr *aniHdr;
    tWlanAssocData *assocData;
+<<<<<<< HEAD
    uint32_t skb_size = NLMSG_SPACE(WLAN_NL_MAX_PAYLOAD);
    skb = alloc_skb(skb_size, GFP_KERNEL);
+=======
+   skb = alloc_skb(NLMSG_SPACE(WLAN_NL_MAX_PAYLOAD), GFP_KERNEL);
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
    if(skb == NULL) {
       VOS_TRACE( VOS_MODULE_ID_HDD, VOS_TRACE_LEVEL_ERROR,
          "BTC: alloc_skb failed\n");
       return;
    }   
+<<<<<<< HEAD
    vos_mem_zero(skb->data, skb_size);
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
    nlh = (struct nlmsghdr *)skb->data;
    nlh->nlmsg_pid = 0;  /* from kernel */
    nlh->nlmsg_flags = 0;

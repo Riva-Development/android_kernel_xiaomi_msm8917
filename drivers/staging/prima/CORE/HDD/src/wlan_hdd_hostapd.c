@@ -1999,6 +1999,7 @@ static void hdd_unsafe_channel_restart_sap(hdd_adapter_t *adapter,
    return;
 }
 
+<<<<<<< HEAD
 static v_U16_t hdd_get_safe_channel_from_acs_range(hdd_context_t *hdd_ctx,
                          hdd_adapter_t *sap_adapter, v_U16_t *unsafeChannelList,
                          v_U16_t unsafeChannelCount)
@@ -2042,12 +2043,15 @@ static v_U16_t hdd_get_safe_channel_from_acs_range(hdd_context_t *hdd_ctx,
     return 0;
 }
 
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 void hdd_check_for_unsafe_ch(hdd_adapter_t *phostapd_adapter,
                                            hdd_context_t *hdd_ctxt)
 {
     v_U16_t    channelLoop;
     v_U16_t    unsafeChannelCount = 0;
     v_U16_t    unsafeChannelList[NUM_20MHZ_RF_CHANNELS];
+<<<<<<< HEAD
     v_U16_t    sta_chan;
     v_U16_t    restart_chan;
     v_CONTEXT_t vos_ctx;
@@ -2064,10 +2068,13 @@ void hdd_check_for_unsafe_ch(hdd_adapter_t *phostapd_adapter,
         hddLog(LOGE, FL("sap_ctx is NULL"));
         return;
     }
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 
     /* Get unsafe channel list */
     vos_get_wlan_unsafe_channel(unsafeChannelList, sizeof(unsafeChannelList),
                                 &unsafeChannelCount);
+<<<<<<< HEAD
     sta_chan = hdd_get_operating_channel(hdd_ctxt, WLAN_HDD_INFRA_STATION);
 
     if (sta_chan) {
@@ -2075,6 +2082,8 @@ void hdd_check_for_unsafe_ch(hdd_adapter_t *phostapd_adapter,
         return;
     }
 
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     for (channelLoop = 0; channelLoop < unsafeChannelCount; channelLoop++)
     {
         if ((unsafeChannelList[channelLoop] ==
@@ -2086,6 +2095,7 @@ void hdd_check_for_unsafe_ch(hdd_adapter_t *phostapd_adapter,
                 * current operating channel is un-safe channel
                 * restart driver
                 */
+<<<<<<< HEAD
                 if (hdd_ctxt->cfg_ini->force_scc_with_ecsa) {
                     restart_chan = hdd_get_safe_channel_from_acs_range(hdd_ctxt,
                                             phostapd_adapter, unsafeChannelList,
@@ -2108,6 +2118,9 @@ void hdd_check_for_unsafe_ch(hdd_adapter_t *phostapd_adapter,
                 } else {
                     hdd_unsafe_channel_restart_sap(phostapd_adapter, hdd_ctxt);
                 }
+=======
+                hdd_unsafe_channel_restart_sap(phostapd_adapter, hdd_ctxt);
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
                /*
                 * On LE, this event is handled by wlan-services to
                 * restart SAP. On android, this event would be

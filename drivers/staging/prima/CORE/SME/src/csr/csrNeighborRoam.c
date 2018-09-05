@@ -5399,6 +5399,7 @@ eHalStatus csrNeighborRoamCandidateFoundIndHdlr(tpAniSirGlobal pMac, void* pMsg)
     tCsrRoamSession *pSession = CSR_GET_SESSION(pMac,
                                                pNeighborRoamInfo->csrSessionId);
 
+<<<<<<< HEAD
     if(!pSession)
     {
         smsLog(pMac, LOGE, FL("session %d not found "),
@@ -5406,6 +5407,8 @@ eHalStatus csrNeighborRoamCandidateFoundIndHdlr(tpAniSirGlobal pMac, void* pMsg)
         return eHAL_STATUS_FAILURE;
     }
 
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
     if (vos_check_monitor_state())
     {
         smsLog(pMac, LOGW, FL("Ignore raom candidate when roam started"));
@@ -5670,6 +5673,7 @@ eHalStatus csrNeighborRoamHandoffReqHdlr(tpAniSirGlobal pMac, void* pMsg)
                              pHandoffReqInfo->bssid,
                              6);
                 pNeighborRoamInfo->uOsRequestedHandoff = 1;
+<<<<<<< HEAD
                if (pNeighborRoamInfo->lastSentCmd != ROAM_SCAN_OFFLOAD_STOP)
                {
                    status = csrRoamOffloadScan(pMac, ROAM_SCAN_OFFLOAD_STOP,
@@ -5682,6 +5686,15 @@ eHalStatus csrNeighborRoamHandoffReqHdlr(tpAniSirGlobal pMac, void* pMsg)
                }
                else
                  csrNeighborRoamProceedWithHandoffReq(pMac);
+=======
+                status = csrRoamOffloadScan(pMac, ROAM_SCAN_OFFLOAD_STOP,
+                                            REASON_OS_REQUESTED_ROAMING_NOW);
+                if (eHAL_STATUS_SUCCESS != status)
+                {
+                    smsLog(pMac, LOGE, FL("csrRoamOffloadScan failed"));
+                    pNeighborRoamInfo->uOsRequestedHandoff = 0;
+                }
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
             }
             else
             {

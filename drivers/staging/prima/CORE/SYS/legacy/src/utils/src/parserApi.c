@@ -5602,8 +5602,13 @@ sap_auth_offload_construct_rsn_opaque( tDot11fIERSN *pdot11f_rsn,
 }
 
 void
+<<<<<<< HEAD
 sap_auth_offload_update_rsn_ie(tpAniSirGlobal pmac,
 			tDot11fIERSNOpaque *pdot11f)
+=======
+sap_auth_offload_update_rsn_ie( tpAniSirGlobal pmac,
+        tDot11fIERSNOpaque *pdot11f)
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 {
     tDot11fIERSN *pdot11f_rsn;
     pdot11f_rsn = vos_mem_malloc(sizeof(tDot11fIERSN));
@@ -5647,7 +5652,10 @@ sap_auth_offload_update_rsn_ie(tpAniSirGlobal pmac,
                 break;
         }
     }
+<<<<<<< HEAD
     vos_mem_free(pdot11f_rsn);
+=======
+>>>>>>> b8466ceeb67c... staging: import prima wlan driver
 }
 #endif /* SAP_AUTH_OFFLOAD */
 
